@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace CalculatePI
 {
@@ -55,7 +56,7 @@ namespace CalculatePI
 
         private static double ParallelPI()
         {
-            List<double> pointsList = new List<double>(NUMPOINTS);
+            var pointsList = new ConcurrentBag<double>();
             Random random = new Random(SEED);
             int numPointsInCircle = 0;
             Stopwatch timer = new Stopwatch();
@@ -65,8 +66,13 @@ namespace CalculatePI
             {
                 Parallel.For(0, NUMPOINTS, (x) =>
                  {
-                     int xCoord = random.Next(RADIUS);
-                     int yCoord = random.Next(RADIUS);
+                     int xCoord;
+                     int yCoord;
+                     lock (pointsList)
+                     {
+                         xCoord = random.Next(RADIUS);
+                         yCoord = random.Next(RADIUS);
+                     }
                      double distanceFromOrigin = Math.Sqrt(xCoord * xCoord + yCoord * yCoord);
                      pointsList.Add(distanceFromOrigin);
                      doAdditionalProcessing();
