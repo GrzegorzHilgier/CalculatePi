@@ -63,8 +63,20 @@ namespace CalculatePI
 
             try
             {
-                // TO DO: Implement the geometric approximation of PI
-                return 0;
+                Parallel.For(0, NUMPOINTS, (x) =>
+                 {
+                     int xCoord = random.Next(RADIUS);
+                     int yCoord = random.Next(RADIUS);
+                     double distanceFromOrigin = Math.Sqrt(xCoord * xCoord + yCoord * yCoord);
+                     pointsList.Add(distanceFromOrigin);
+                     doAdditionalProcessing();
+                 });
+                foreach (double datum in pointsList)
+                {
+                    if (datum <= RADIUS) numPointsInCircle++;
+                }
+                double pi = 4.0 * numPointsInCircle / NUMPOINTS;
+                return pi;
             }
             finally
             {
@@ -81,13 +93,11 @@ namespace CalculatePI
 
         static void Main(string[] args)
         {
-            double pi = SerialPI();
-            Console.WriteLine("Geometric approximation of PI calculated serially: {0}", pi);
-
+            //double pi = SerialPI();
+            //Console.WriteLine("Geometric approximation of PI calculated serially: {0}", pi);
+            double pi = ParallelPI();
+            Console.WriteLine("Geometric approximation of PI calculated in parallel: {0}", pi);
             Console.ReadKey();
-
-            //pi = ParallelPI();
-            //Console.WriteLine("Geometric approximation of PI calculated in parallel: {0}", pi);
         }
     }
 }
