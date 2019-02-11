@@ -38,6 +38,12 @@ namespace CalculatePI
                     pointsList.Add(distanceFromOrigin);
                     doAdditionalProcessing();
                 }
+                foreach(double datum in pointsList)
+                {
+                    if (datum <= RADIUS) numPointsInCircle++;                       
+                }
+                double pi = 4.0 * numPointsInCircle / NUMPOINTS;
+                return pi;
             }
             finally
             {
