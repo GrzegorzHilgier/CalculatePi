@@ -84,7 +84,7 @@ namespace CalculatePI
             double pi = SerialPI();
             Console.WriteLine("Geometric approximation of PI calculated serially: {0}", pi);
 
-            Console.WriteLine();
+            Console.ReadKey();
 
             //pi = ParallelPI();
             //Console.WriteLine("Geometric approximation of PI calculated in parallel: {0}", pi);
